@@ -33,6 +33,7 @@ class FavorViewModel : ViewModel() {
         refresh()
     }
 
+    fun incrementCounter() = _state.update { it.copy(counter = it.counter + 1) }
     fun onQueryChange(q: String) = _state.update { it.copy(query = q) }
     fun onDirectionChange(d: Direction?) = _state.update { it.copy(directionFilter = d) }
 

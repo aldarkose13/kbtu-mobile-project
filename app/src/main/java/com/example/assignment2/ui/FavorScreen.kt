@@ -42,6 +42,8 @@ fun FavorScreen(vm: FavorViewModel = viewModel(), modifier: Modifier = Modifier)
             ){Text("Add") }
         }
 
+        RotationDemo(state.counter, vm::incrementCounter)
+
         SearchBar(state.query, vm::onQueryChange)
         DirectionFilter(state.directionFilter, vm::onDirectionChange)
 
