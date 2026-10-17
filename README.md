@@ -32,6 +32,15 @@ Rotation demo: tap each of the three buttons in the demo row a few times, then r
 4. Rotate the emulator (Ctrl+Left/Right arrow) to see the state behavior.
 
 ## Screenshots
-| Main screen                   | After rotation                      |
-|-------------------------------|-------------------------------------|
-| ![Main](screenshots/main.png) | ![Rotated](screenshots/rotated.png) |
+| Main screen                               | After rotation                                |
+|-------------------------------------------|-----------------------------------------------|
+| ![Main](screenshots/main.png)             | ![Rotated](screenshots/rotated.png)           |
+| ![Main](screenshots/addingFavor.png)      |                                               |
+| ![Main](screenshots/favorAdded.png)       | ![Rotated](screenshots/favorAddedRotated.png) |
+| ![Main](screenshots/favorStateChange.png) |                                               |
+| ![Main](screenshots/filter.png)           |                                               |
+| ![Main](screenshots/search.png)           |                                               |
+
+
+
+
