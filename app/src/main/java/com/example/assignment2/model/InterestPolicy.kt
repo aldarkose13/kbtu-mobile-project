@@ -4,8 +4,8 @@ import java.time.Duration
 import java.time.LocalDateTime
 
 class InterestPolicy(
-    val basePenalty: Int = 10,
-    val interestRate: Double = 0.2,
+    val basePenalty: Int = 1,
+    val interestRate: Double = 0.1,
     // in how many days interest is calculated by default one week
     val intervalDays: Int = 7
     ){

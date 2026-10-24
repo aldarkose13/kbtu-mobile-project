@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Project-specific
+/.idea/inspectionProfiles/
+Midterm Project - Android.pdf
+NEXT_STEPS.txt

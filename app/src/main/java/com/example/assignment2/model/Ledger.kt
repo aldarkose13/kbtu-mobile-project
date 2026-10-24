@@ -20,7 +20,11 @@ class Ledger(private val policy : InterestPolicy = InterestPolicy()) {
     }
     fun repay(id: Int, now: LocalDateTime = LocalDateTime.now()){ favors[id]?.let { favors[id] = it.repay(now) } }
     fun undo(id: Int){ favors[id]?.let{ favors[id] = it.undo() } }
+    fun remove(id: Int) { favors.remove(id) }
     fun search(condition: (Favor) -> Boolean) = all().filter(condition)
+
+    fun interestFor(favor: Favor, now: LocalDateTime = LocalDateTime.now()): Double =
+        policy.interest(favor, now)
 
     fun balanceWith(personId: Int, now: LocalDateTime = LocalDateTime.now()): Double =
         all().filter { it.personId == personId && it.repaidAt == null }
