@@ -2,6 +2,7 @@ package com.example.assignment2.ui
 
 import com.example.assignment2.model.Direction
 import com.example.assignment2.model.Favor
+import com.example.assignment2.model.HistoryEntry
 import com.example.assignment2.model.Person
 import com.example.assignment2.model.Status
 import java.time.LocalDateTime
@@ -9,6 +10,8 @@ import java.time.LocalDateTime
 data class FavorUiState(
     val favors: List<Favor> = emptyList(),
     val people: List<Person> = emptyList(),
+    val deletedFavors: List<Favor> = emptyList(),
+    val history: List<HistoryEntry> = emptyList(),
     val query: String = "",          // what the text field shows (updates instantly)
     val appliedQuery: String = "",   // debounced copy used for filtering
     val directionFilter: Direction? = null,

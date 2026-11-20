@@ -7,8 +7,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -17,11 +20,26 @@ import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen(vm: FavorViewModel, favorId: Int, onBack: () -> Unit) {
+fun DetailScreen(vm: FavorViewModel, favorId: Int, onEdit: (Int) -> Unit, onBack: () -> Unit) {
     val state by vm.state.collectAsStateWithLifecycle()
     val favor = state.favors.firstOrNull { it.id == favorId }
+    var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (showDeleteDialog && favor != null) {
+        ConfirmDeleteDialog(
+            title = "Delete favor?",
+            message = "\"${favor.description}\" will move to Recently deleted. You can restore it from History.",
+            onConfirm = {
+                showDeleteDialog = false
+                vm.deleteFavor(favor.id)
+                onBack()
+            },
+            onDismiss = { showDeleteDialog = false }
+        )
+    }
 
     Scaffold(
+        snackbarHost = { AppSnackbarHost() },
         topBar = {
             TopAppBar(
                 title = { Text("Favor details") },
@@ -32,10 +50,10 @@ fun DetailScreen(vm: FavorViewModel, favorId: Int, onBack: () -> Unit) {
                 },
                 actions = {
                     if (favor != null) {
-                        IconButton(onClick = {
-                            vm.deleteFavor(favor.id)
-                            onBack()
-                        }) {
+                        IconButton(onClick = { onEdit(favor.id) }) {
+                            Icon(Icons.Default.Edit, contentDescription = "Edit")
+                        }
+                        IconButton(onClick = { showDeleteDialog = true }) {
                             Icon(Icons.Default.Delete, contentDescription = "Delete")
                         }
                     }
@@ -44,7 +62,19 @@ fun DetailScreen(vm: FavorViewModel, favorId: Int, onBack: () -> Unit) {
         }
     ) { innerPadding ->
         if (favor == null) {
-            Text("Favor not found", modifier = Modifier.padding(innerPadding).padding(16.dp))
+            if (state.isLoading) {
+                Box(Modifier.fillMaxSize().padding(innerPadding), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                EmptyState(
+                    title = "Favor not found",
+                    message = "It may have been deleted. You can restore it from History.",
+                    actionLabel = "Back",
+                    onAction = onBack,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
         } else {
             val now = LocalDateTime.now()
             Column(

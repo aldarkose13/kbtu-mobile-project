@@ -18,6 +18,7 @@ fun StatsScreen(vm: FavorViewModel, onBack: () -> Unit) {
     val state by vm.state.collectAsStateWithLifecycle()
 
     Scaffold(
+        snackbarHost = { AppSnackbarHost() },
         topBar = {
             TopAppBar(
                 title = { Text("Balances") },
@@ -34,6 +35,14 @@ fun StatsScreen(vm: FavorViewModel, onBack: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             item { KarmaCard(state.karma, onClick = {}) }
+            if (state.people.isEmpty() && !state.isLoading) {
+                item(key = "empty") {
+                    EmptyState(
+                        title = "No balances yet",
+                        message = "Add people and favors to see who owes whom."
+                    )
+                }
+            }
             items(state.people, key = { it.id }) { person ->
                 val balance = state.balances[person.id] ?: 0.0
                 PersonBalanceRow(name = person.username, balance = balance)
